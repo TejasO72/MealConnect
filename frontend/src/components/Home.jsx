@@ -1,54 +1,90 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import {
-  Box,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Heading,
-  Image,
-  Stack,
-  Text,
+  Input,
   Button,
-  ButtonGroup
+  VStack,
+  Center,
+  Heading,
+  Box
 } from '@chakra-ui/react';
+import axios from 'axios';
+
 const Home = () => {
+  const [donorData, setDonorData] = useState({
+    email: '',
+    password: '',
+    phone: '',
+    fullname: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDonorData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = () => {
+    try {
+      const storingDonorData = axios.post('http://localhost:5000/createdonor', {
+        email: donorData.email,
+        password: donorData.password,
+        phone: donorData.phone,
+        fullname: donorData.fullname,
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div>
-      <Card maxW='sm'>
-        <CardBody>
-          <Image
-            src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-            alt='Green double couch with wooden legs'
-            borderRadius='lg'
+    <Box
+      bgGradient="linear(to-br, teal.200, purple.500)"
+      w="100%"
+      h="100vh"
+    >
+      <Center h="100%">
+        <VStack spacing={4} align="center">
+          <Heading as="h1" size="xl" mb={8} color="white">Register as a Donor</Heading>
+          <Input
+            width="auto"
+            placeholder="Email Address"
+            backgroundColor="white"
+            name="email"
+            value={donorData.email}
+            onChange={handleChange}
           />
-          <Stack mt='6' spacing='3'>
-            <Heading size='md'>Living room Sofa</Heading>
-            <Text>
-              This sofa is perfect for modern tropical spaces, baroque inspired
-              spaces, earthy toned spaces and for people who love a chic design with a
-              sprinkle of vintage design.
-            </Text>
-            <Text color='blue.600' fontSize='2xl'>
-              $450
-            </Text>
-          </Stack>
-        </CardBody>
-        <Divider />
-        <CardFooter>
-          <ButtonGroup spacing='2'>
-            <Button variant='solid' colorScheme='blue'>
-              Buy now
-            </Button>
-            <Button variant='ghost' colorScheme='blue'>
-              Add to cart
-            </Button>
-          </ButtonGroup>
-        </CardFooter>
-      </Card>
-    </div>
+          <Input
+            width="auto"
+            type="password"
+            placeholder="Password"
+            backgroundColor="white"
+            name="password"
+            value={donorData.password}
+            onChange={handleChange}
+          />
+          <Input
+            width="auto"
+            placeholder="Phone Number"
+            backgroundColor="white"
+            name="phone"
+            value={donorData.phone}
+            onChange={handleChange}
+          />
+          <Input
+            width="auto"
+            placeholder="Full Name"
+            backgroundColor="white"
+            name="fullname"
+            value={donorData.fullname}
+            onChange={handleChange}
+          />
+          <Button colorScheme="blue" onClick={handleSubmit}>Register</Button>
+        </VStack>
+      </Center>
+    </Box>
   );
 };
 
