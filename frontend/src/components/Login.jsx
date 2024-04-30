@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Button,
@@ -21,6 +21,13 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (Cookies.get("usertoken")) {
+      navigate("/landing");
+    }
+  }, [navigate])
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,7 +50,8 @@ const Login = () => {
       );
 
       if (response.status === 200) {
-        Cookies.set("usertoken", response.cookietoken, {
+        
+        Cookies.set("usertoken", response.data.cookietoken, {
           expires: 7,
           secure: true
         });

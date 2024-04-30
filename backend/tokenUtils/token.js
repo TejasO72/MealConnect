@@ -1,8 +1,6 @@
-// tokenUtils.js
-
 import jwt from 'jsonwebtoken';
 
-const secretKey = 'niggachiggaDYmealconnect'; // Replace with your actual secret key
+const secretKey = 'miniprojectDYmealconnect'; // Replace with your actual secret key
 
 const generateAuthToken = async (email) => {
     const randomNumber = Math.floor(Math.random() * 9000) + 1000; // Generate a random 4-digit number
@@ -10,9 +8,9 @@ const generateAuthToken = async (email) => {
         email: email,
         random: randomNumber,
     };
-    return jwt.sign(payload, secretKey);
+    const token = await jwt.sign(payload, secretKey); // Await jwt.sign to get the token value
+    return token;
 };
-
 
 const verifyAuthToken = (token) => {
     try {
