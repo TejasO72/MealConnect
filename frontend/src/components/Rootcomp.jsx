@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Button,
@@ -22,6 +22,14 @@ const Rootcomp = () => {
   });
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (Cookies.get("usertoken")) {
+      navigate("/landing");
+    }
+  
+  }, [navigate])
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDonorData((prevState) => ({
@@ -42,7 +50,7 @@ const Rootcomp = () => {
         }
       );
 
-      Cookies.set("usertoken", storingDonorData.cookietoken, {
+      Cookies.set("usertoken", storingDonorData.data.cookietoken, {
         expires: 7,
         secure: true
       });
@@ -126,6 +134,12 @@ const Rootcomp = () => {
                 Already have an account?{" "}
                 <Link href="/login" underline="hover">
                   Login
+                </Link>
+              </Typography>
+              <Typography variant="body2">
+                An NGO ?
+                <Link href="/ngoreg" underline="hover">
+                  Register as an NGO
                 </Link>
               </Typography>
             </Grid>
